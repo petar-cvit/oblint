@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -17,6 +18,11 @@ func NewHandler(storage Storage) Handler {
 }
 
 func (h *Handler) Test(c *gin.Context) {
+	err := h.storage.Random()
+	if err != nil {
+		fmt.Println(err)
+	}
+
 	c.JSON(http.StatusOK, struct {
 		Name string
 	}{

@@ -10,7 +10,11 @@ import (
 func main() {
 	r := gin.Default()
 
-	storage := internal.NewStorage()
+	storage, err := internal.NewStorage()
+	if err != nil {
+		panic(err)
+	}
+
 	handler := internal.NewHandler(storage)
 
 	r.GET("/", func(c *gin.Context) {
