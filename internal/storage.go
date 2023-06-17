@@ -2,16 +2,22 @@ package internal
 
 import (
 	"context"
+	"encoding/json"
 	"math/rand"
 	"os"
 	"strconv"
 
+	"example.com/oblint/internal/models"
 	"github.com/go-redis/redis/v8"
 )
 
 type Storage struct {
 	client *redis.Client
 }
+
+const (
+	history = "history"
+)
 
 func NewStorage() (Storage, error) {
 	host := os.Getenv("REDIS_HOST")
@@ -33,4 +39,48 @@ func (s Storage) Random() error {
 	random := rand.Int()
 
 	return s.client.Set(context.Background(), strconv.Itoa(random), random, 0).Err()
+}
+
+func (s Storage) SaveToHistory(hw models.HistoryHomework) error {
+	data, err := json.Marshal(hw)
+	if err != nil {
+		return err
+	}
+
+	return s.client.HSet(context.Background(), history, hw.ID, data).Err()
+}
+
+func (s Storage) GetHistory() ([]models.HistoryHomework, error) {
+	res, err := s.client.HGetAll(context.Background(), history).Result()
+	if err != nil {
+		return nil, err
+	}
+
+	out := make([]models.HistoryHomework, 0)
+
+	for _, hw := range res {
+		var homework models.HistoryHomework
+
+		if err := json.Unmarshal([]byte(hw), &homework); err != nil {
+			return nil, err
+		}
+
+		out = append(out, homework)
+	}
+
+	return out, nil
+}
+
+func (s Storage) GetHistoryByID(ID string) (models.HistoryHomework, error) {
+	res, err := s.client.HGet(context.Background(), history, ID).Result()
+	if err != nil {
+		return models.HistoryHomework{}, err
+	}
+
+	var homework models.HistoryHomework
+	if err := json.Unmarshal([]byte(res), &homework); err != nil {
+		return models.HistoryHomework{}, err
+	}
+
+	return homework, nil
 }

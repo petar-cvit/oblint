@@ -22,6 +22,8 @@ func main() {
 	})
 
 	r.GET("/test", handler.Test)
+	r.GET("/history", handler.HomeworkHistory)
+	r.GET("/history/:ID", handler.HomeworkHistoryById)
 
 	r.Run()
 }
