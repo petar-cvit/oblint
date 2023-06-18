@@ -17,6 +17,7 @@ type Storage struct {
 
 const (
 	history = "history"
+	ongoing = "ongoing"
 )
 
 func NewStorage() (Storage, error) {
@@ -80,6 +81,50 @@ func (s Storage) GetHistoryByID(ID string) (models.HistoryHomework, error) {
 	var homework models.HistoryHomework
 	if err := json.Unmarshal([]byte(res), &homework); err != nil {
 		return models.HistoryHomework{}, err
+	}
+
+	return homework, nil
+}
+
+func (s Storage) SaveToHomeworks(hw models.Homework) error {
+	data, err := json.Marshal(hw)
+	if err != nil {
+		return err
+	}
+
+	return s.client.HSet(context.Background(), ongoing, hw.ID, data).Err()
+}
+
+func (s Storage) GetHomeworks() ([]models.Homework, error) {
+	res, err := s.client.HGetAll(context.Background(), ongoing).Result()
+	if err != nil {
+		return nil, err
+	}
+
+	out := make([]models.Homework, 0)
+
+	for _, hw := range res {
+		var homework models.Homework
+
+		if err := json.Unmarshal([]byte(hw), &homework); err != nil {
+			return nil, err
+		}
+
+		out = append(out, homework)
+	}
+
+	return out, nil
+}
+
+func (s Storage) GetHomeworkByID(ID string) (models.Homework, error) {
+	res, err := s.client.HGet(context.Background(), ongoing, ID).Result()
+	if err != nil {
+		return models.Homework{}, err
+	}
+
+	var homework models.Homework
+	if err := json.Unmarshal([]byte(res), &homework); err != nil {
+		return models.Homework{}, err
 	}
 
 	return homework, nil

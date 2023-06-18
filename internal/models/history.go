@@ -11,3 +11,14 @@ type HistoryHomework struct {
 	Correct        string       `json:"correct"`
 	Answered       string       `json:"answered"`
 }
+
+type Homework struct {
+	ID                 string       `json:"id"`
+	Name               string       `json:"name"`
+	LastSubmissionDate string       `json:"lastSubmissionDate"`
+	DueDate            string       `json:"dueDate"`
+	MaxPoints          int          `json:"maxPoints"`
+	Type               HomeworkType `json:"type"`
+	Answered           string       `json:"answered"`
+	Started            bool         `json:"started"`
+}
