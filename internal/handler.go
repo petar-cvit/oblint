@@ -2,8 +2,10 @@ package internal
 
 import (
 	"fmt"
+	"math"
 	"net/http"
 
+	"example.com/oblint/internal/models"
 	"github.com/gin-gonic/gin"
 )
 
@@ -65,6 +67,56 @@ func (h *Handler) HomeworkById(c *gin.Context) {
 	c.JSON(http.StatusOK, history)
 }
 
+func (h *Handler) Stats(c *gin.Context) {
+	generationScore := []int{10, 3, 8, 6, 3, 6, 8, 3, 9, 7, 0, 7, 9, 8, 3, 8, 9, 4, 10, 5}
+
+	minGeneration := generationScore[0]
+	maxGeneration := generationScore[0]
+	for _, score := range generationScore {
+		if score < minGeneration {
+			minGeneration = score
+		}
+		if score > maxGeneration {
+			maxGeneration = score
+		}
+	}
+
+	history, err := h.storage.GetHistory()
+	if err != nil {
+		c.Status(http.StatusInternalServerError)
+		return
+	}
+
+	ongoing, err := h.storage.GetHomeworks()
+	if err != nil {
+		c.Status(http.StatusInternalServerError)
+		return
+	}
+
+	inProgress := 0
+	notStarted := 0
+	for _, homework := range ongoing {
+		if homework.Started {
+			inProgress++
+		} else {
+			notStarted++
+		}
+	}
+
+	stats := models.Stats{
+		GenerationScore: generationScore,
+		Min:             float64(minGeneration),
+		Max:             float64(maxGeneration),
+		Avg:             calculateAverage(generationScore),
+		Std:             calculateStandardDeviation(generationScore),
+		Finished:        len(history),
+		InProgress:      inProgress,
+		NotStarted:      notStarted,
+	}
+
+	c.JSON(http.StatusOK, stats)
+}
+
 func (h *Handler) Test(c *gin.Context) {
 	err := h.storage.Random()
 	if err != nil {
@@ -76,4 +128,25 @@ func (h *Handler) Test(c *gin.Context) {
 	}{
 		Name: "lasighas.rikjngh",
 	})
+}
+
+func calculateAverage(arr []int) float64 {
+	sum := 0
+	for _, num := range arr {
+		sum += num
+	}
+	return float64(sum) / float64(len(arr))
+}
+
+func calculateStandardDeviation(arr []int) float64 {
+	avg := calculateAverage(arr)
+	variance := 0.0
+
+	for _, num := range arr {
+		variance += math.Pow(float64(num)-avg, 2)
+	}
+
+	variance /= float64(len(arr))
+	stdDev := math.Sqrt(variance)
+	return stdDev
 }
