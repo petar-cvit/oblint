@@ -135,7 +135,8 @@ func calculateAverage(arr []int) float64 {
 	for _, num := range arr {
 		sum += num
 	}
-	return float64(sum) / float64(len(arr))
+
+	return math.Round((float64(sum)/float64(len(arr)))*100) / 100
 }
 
 func calculateStandardDeviation(arr []int) float64 {
@@ -148,5 +149,5 @@ func calculateStandardDeviation(arr []int) float64 {
 
 	variance /= float64(len(arr))
 	stdDev := math.Sqrt(variance)
-	return stdDev
+	return math.Round(stdDev*100) / 100
 }
