@@ -87,6 +87,10 @@ func (h *Handler) Stats(c *gin.Context) {
 		return
 	}
 
+	for _, homework := range history {
+		generationScore = append(generationScore, homework.Points)
+	}
+
 	ongoing, err := h.storage.GetHomeworks()
 	if err != nil {
 		c.Status(http.StatusInternalServerError)
