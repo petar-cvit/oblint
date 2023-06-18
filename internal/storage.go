@@ -99,6 +99,10 @@ func (s Storage) SaveToHomeworks(hw models.Homework) error {
 	return s.client.HSet(context.Background(), ongoing, hw.ID, data).Err()
 }
 
+func (s Storage) DeleteFromHomeworks(hw models.Homework) error {
+	return s.client.HDel(context.Background(), ongoing, hw.ID).Err()
+}
+
 func (s Storage) GetHomeworks() ([]models.Homework, error) {
 	res, err := s.client.HGetAll(context.Background(), ongoing).Result()
 	if err != nil {

@@ -1,12 +1,15 @@
 package internal
 
 import (
+	"errors"
 	"fmt"
 	"math"
 	"net/http"
+	"time"
 
 	"example.com/oblint/internal/models"
 	"github.com/gin-gonic/gin"
+	"github.com/go-redis/redis/v8"
 )
 
 type Handler struct {
@@ -119,6 +122,48 @@ func (h *Handler) Stats(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, stats)
+}
+
+func (h *Handler) SubmitHomework(c *gin.Context) {
+	var req models.SubmitHomeworkDTO
+	if err := c.BindJSON(&req); err != nil {
+		c.Status(http.StatusBadRequest)
+		return
+	}
+
+	hw, err := h.storage.GetHomeworkByID(req.ID)
+	if err != nil {
+		if errors.Is(err, redis.Nil) {
+			c.String(http.StatusBadRequest, "homework not found")
+			return
+		}
+
+		c.Status(http.StatusBadRequest)
+		return
+	}
+
+	if err := h.storage.SaveToHistory(models.HistoryHomework{
+		ID:             hw.ID,
+		Name:           hw.Name,
+		SubmissionDate: time.Now().Format("02.01.2006."),
+		DueDate:        hw.DueDate,
+		Points:         0,
+		MaxPoints:      hw.MaxPoints,
+		Type:           hw.Type,
+		Question:       hw.Question,
+		Statement:      hw.Statement,
+		Data:           hw.Data,
+		CorrectData:    hw.CorrectData,
+		Answer:         hw.Answer,
+		CorrectAnswer:  hw.CorrectAnswer,
+	}); err != nil {
+		c.Status(http.StatusBadRequest)
+		return
+	}
+
+	h.storage.DeleteFromHomeworks(hw)
+
+	c.Status(http.StatusOK)
 }
 
 func (h *Handler) Test(c *gin.Context) {

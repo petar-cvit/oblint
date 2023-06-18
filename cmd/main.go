@@ -31,5 +31,7 @@ func main() {
 
 	r.GET("/stats", handler.Stats)
 
+	r.POST("/submit", handler.SubmitHomework)
+
 	r.Run()
 }
