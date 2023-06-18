@@ -8,8 +8,12 @@ type HistoryHomework struct {
 	Points         int          `json:"points"`
 	MaxPoints      int          `json:"maxPoints"`
 	Type           HomeworkType `json:"type"`
-	Correct        string       `json:"correct"`
-	Answered       string       `json:"answered"`
+
+	Statement     string `json:"statement"`
+	Data          []int  `json:"data"`
+	CorrectData   []int  `json:"correctData"`
+	Answer        string `json:"answer"`
+	CorrectAnswer string `json:"correctAnswer"`
 }
 
 type Homework struct {

@@ -10,9 +10,12 @@ func seedHistory(storage Storage) {
 		DueDate:        "11.5.2023.",
 		Points:         5,
 		MaxPoints:      10,
-		Type:           models.First,
-		Correct:        "0,1,1,0",
-		Answered:       "0,1,0,1",
+		Type:           models.Second,
+		Statement:      "A and B",
+		Data:           []int{0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1},
+		CorrectData:    []int{0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1},
+		Answer:         "",
+		CorrectAnswer:  "",
 	})
 	if err != nil {
 		panic(err)
@@ -26,8 +29,11 @@ func seedHistory(storage Storage) {
 		Points:         9,
 		MaxPoints:      12,
 		Type:           models.Second,
-		Correct:        "A or B and not A",
-		Answered:       "A or B and not B",
+		Statement:      "A and not B",
+		Data:           []int{0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1},
+		CorrectData:    []int{0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0},
+		Answer:         "",
+		CorrectAnswer:  "",
 	})
 	if err != nil {
 		panic(err)
@@ -41,8 +47,11 @@ func seedHistory(storage Storage) {
 		Points:         1,
 		MaxPoints:      5,
 		Type:           models.First,
-		Correct:        "0,0,1,0",
-		Answered:       "0,1,0,1",
+		Statement:      "A or B",
+		Data:           []int{0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1},
+		CorrectData:    []int{},
+		Answer:         "not A and B",
+		CorrectAnswer:  "A or B",
 	})
 	if err != nil {
 		panic(err)

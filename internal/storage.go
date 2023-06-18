@@ -31,6 +31,10 @@ func NewStorage() (Storage, error) {
 		return Storage{}, err
 	}
 
+	if err := client.FlushDB(context.Background()).Err(); err != nil {
+		return Storage{}, err
+	}
+
 	return Storage{
 		client: client,
 	}, nil
