@@ -1,7 +1,7 @@
 package models
 
 type Stats struct {
-	GenerationScore []int   `json:"generaionScore"`
+	GenerationScore []int   `json:"generationScore"`
 	Min             float64 `json:"min"`
 	Max             float64 `json:"max"`
 	Avg             float64 `json:"avg"`
