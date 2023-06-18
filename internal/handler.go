@@ -131,6 +131,10 @@ func (h *Handler) SubmitHomework(c *gin.Context) {
 		return
 	}
 
+	if req.DataAnswer == nil {
+		req.DataAnswer = []string{}
+	}
+
 	hw, err := h.storage.GetHomeworkByID(req.ID)
 	if err != nil {
 		if errors.Is(err, redis.Nil) {
@@ -139,6 +143,11 @@ func (h *Handler) SubmitHomework(c *gin.Context) {
 		}
 
 		c.Status(http.StatusBadRequest)
+		return
+	}
+
+	if hw.Type == 2 && len(req.DataAnswer) != 12 {
+		c.String(http.StatusBadRequest, "answer should be long 12")
 		return
 	}
 
@@ -152,9 +161,9 @@ func (h *Handler) SubmitHomework(c *gin.Context) {
 		Type:           hw.Type,
 		Question:       hw.Question,
 		Statement:      hw.Statement,
-		Data:           hw.Data,
+		Data:           req.DataAnswer,
 		CorrectData:    hw.CorrectData,
-		Answer:         hw.Answer,
+		Answer:         req.StatementAnswer,
 		CorrectAnswer:  hw.CorrectAnswer,
 	}); err != nil {
 		c.Status(http.StatusBadRequest)
