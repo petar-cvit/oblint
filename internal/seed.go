@@ -48,8 +48,8 @@ func seedHistory(storage Storage) {
 		MaxPoints:      5,
 		Type:           models.First,
 		Statement:      "",
-		Data:           []int{0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1},
-		CorrectData:    []int{},
+		CorrectData:    []int{0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1},
+		Data:           []int{},
 		Answer:         "not A and B",
 		CorrectAnswer:  "A or B",
 	})
