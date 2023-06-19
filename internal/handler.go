@@ -135,6 +135,7 @@ func (h *Handler) CreateHomework(c *gin.Context) {
 	}
 
 	hw.ID = uuid.NewString()
+	hw.MaxPoints = 10
 
 	if hw.Type == models.First {
 		hw.Question = FirstQuestion
