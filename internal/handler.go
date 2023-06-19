@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"math"
+	"math/rand"
 	"net/http"
 	"sort"
 	"time"
@@ -197,12 +198,14 @@ func (h *Handler) SubmitHomework(c *gin.Context) {
 		return
 	}
 
+	points := rand.Intn(10-2) + 10
+
 	if err := h.storage.SaveToHistory(models.HistoryHomework{
 		ID:             hw.ID,
 		Name:           hw.Name,
 		SubmissionDate: time.Now().Format("02.01.2006."),
 		DueDate:        hw.DueDate,
-		Points:         0,
+		Points:         points,
 		MaxPoints:      hw.MaxPoints,
 		Type:           hw.Type,
 		Question:       hw.Question,
