@@ -136,6 +136,12 @@ func (h *Handler) CreateHomework(c *gin.Context) {
 
 	hw.ID = uuid.NewString()
 
+	if hw.Type == models.First {
+		hw.Question = FirstQuestion
+	} else if hw.Type == models.Second {
+		hw.Question = SecondQuestion
+	}
+
 	if err := h.storage.SaveToHomeworks(hw); err != nil {
 		c.Status(http.StatusInternalServerError)
 		return

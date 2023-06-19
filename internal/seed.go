@@ -3,8 +3,8 @@ package internal
 import "example.com/oblint/internal/models"
 
 const (
-	firstQuestion  = "Write down the statement for the boolean data"
-	secondQuestion = "Fill in the empty Res fields for the boolean table"
+	FirstQuestion  = "Write down the statement for the boolean data"
+	SecondQuestion = "Fill in the empty Res fields for the boolean table"
 )
 
 func seedHistory(storage Storage) {
@@ -16,7 +16,7 @@ func seedHistory(storage Storage) {
 		Points:         5,
 		MaxPoints:      10,
 		Type:           models.Second,
-		Question:       secondQuestion,
+		Question:       SecondQuestion,
 		Statement:      "A and B",
 		Data:           []string{"0", "0", "0", "0", "1", "0", "1", "0", "1", "1", "1", "1"},
 		CorrectData:    []string{"0", "0", "0", "0", "1", "0", "1", "0", "0", "1", "1", "1"},
@@ -35,7 +35,7 @@ func seedHistory(storage Storage) {
 		Points:         9,
 		MaxPoints:      12,
 		Type:           models.Second,
-		Question:       secondQuestion,
+		Question:       SecondQuestion,
 		Statement:      "A and not B",
 		Data:           []string{"0", "0", "0", "0", "1", "0", "1", "0", "0", "1", "1", "1"},
 		CorrectData:    []string{"0", "0", "0", "0", "1", "0", "1", "0", "1", "1", "1", "0"},
@@ -54,7 +54,7 @@ func seedHistory(storage Storage) {
 		Points:         1,
 		MaxPoints:      5,
 		Type:           models.First,
-		Question:       firstQuestion,
+		Question:       FirstQuestion,
 		Statement:      "",
 		CorrectData:    []string{"0", "0", "0", "0", "1", "1", "1", "0", "1", "1", "1", "1"},
 		Data:           []string{},
@@ -74,7 +74,7 @@ func seedOngoing(storage Storage) {
 		DueDate:            "15.5.2023.",
 		MaxPoints:          10,
 		Type:               models.First,
-		Question:           firstQuestion,
+		Question:           FirstQuestion,
 		Statement:          "",
 		CorrectData:        []string{"0", "0", "0", "0", "1", "1", "1", "0", "1", "1", "1", "1"},
 		Data:               []string{},
@@ -93,7 +93,7 @@ func seedOngoing(storage Storage) {
 		DueDate:            "15.5.2023.",
 		MaxPoints:          8,
 		Type:               models.Second,
-		Question:           secondQuestion,
+		Question:           SecondQuestion,
 		Statement:          "A and not B",
 		Data:               []string{"0", "0", "0", "0", "1", "1", "1", "0", "", "1", "1", "1"},
 		CorrectData:        []string{"0", "0", "0", "0", "1", "1", "1", "0", "1", "1", "1", "1"},
@@ -112,7 +112,7 @@ func seedOngoing(storage Storage) {
 		DueDate:            "12.5.2023.",
 		MaxPoints:          16,
 		Type:               models.First,
-		Question:           firstQuestion,
+		Question:           FirstQuestion,
 		CorrectData:        []string{"0", "0", "0", "0", "1", "1", "1", "0", "1", "1", "1", "1"},
 		Data:               []string{},
 		Answer:             "",
