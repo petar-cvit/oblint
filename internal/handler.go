@@ -195,6 +195,21 @@ func (h *Handler) SubmitHomework(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
 
+func (h *Handler) SaveHomework(c *gin.Context) {
+	var hw models.Homework
+	if err := c.BindJSON(&hw); err != nil {
+		c.Status(http.StatusBadRequest)
+		return
+	}
+
+	if err := h.storage.SaveToHomeworks(hw); err != nil {
+		c.Status(http.StatusBadRequest)
+		return
+	}
+
+	c.Status(http.StatusOK)
+}
+
 func (h *Handler) GetMessages(c *gin.Context) {
 	msgs, err := h.storage.GetForum()
 	if err != nil {

@@ -33,6 +33,7 @@ func main() {
 	r.GET("/stats", handler.Stats)
 
 	r.POST("/submit", handler.SubmitHomework)
+	r.PUT("/submit", handler.SaveHomework)
 
 	r.GET("/forum", handler.GetMessages)
 	r.POST("/forum", handler.SubmitMessage)
