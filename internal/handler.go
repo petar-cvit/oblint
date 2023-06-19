@@ -18,8 +18,10 @@ type Handler struct {
 
 func NewHandler(storage Storage) Handler {
 	// seed
+	storage.Clear()
 	seedHistory(storage)
 	seedOngoing(storage)
+	seedForum(storage)
 
 	return Handler{
 		storage: storage,
@@ -171,6 +173,33 @@ func (h *Handler) SubmitHomework(c *gin.Context) {
 	}
 
 	h.storage.DeleteFromHomeworks(hw)
+
+	c.Status(http.StatusOK)
+}
+
+func (h *Handler) GetMessages(c *gin.Context) {
+	msgs, err := h.storage.GetForum()
+	if err != nil {
+		c.Status(http.StatusInternalServerError)
+		return
+	}
+
+	c.JSON(http.StatusOK, msgs)
+}
+
+func (h *Handler) SubmitMessage(c *gin.Context) {
+	var msg models.Message
+	if err := c.BindJSON(&msg); err != nil {
+		c.Status(http.StatusBadRequest)
+		return
+	}
+
+	msg.Timestamp = time.Now().Format(time.Kitchen)
+
+	if err := h.storage.AddMessage(msg); err != nil {
+		c.Status(http.StatusInternalServerError)
+		return
+	}
 
 	c.Status(http.StatusOK)
 }

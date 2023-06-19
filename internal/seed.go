@@ -123,3 +123,29 @@ func seedOngoing(storage Storage) {
 		panic(err)
 	}
 }
+
+func seedForum(storage Storage) {
+	if err := storage.AddMessage(models.Message{
+		Name:        "John Doe",
+		Timestamp:   "10:45AM",
+		MessageBody: "Jeste li završili 3. zadaću?",
+	}); err != nil {
+		panic(err)
+	}
+
+	if err := storage.AddMessage(models.Message{
+		Name:        "Jane Doe",
+		Timestamp:   "10:50AM",
+		MessageBody: "Ja jesam dobila sam sve bodove",
+	}); err != nil {
+		panic(err)
+	}
+
+	if err := storage.AddMessage(models.Message{
+		Name:        "John Doe",
+		Timestamp:   "11:35AM",
+		MessageBody: "Možeš li objasniti kako dobiti rješenje?",
+	}); err != nil {
+		panic(err)
+	}
+}

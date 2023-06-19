@@ -33,5 +33,8 @@ func main() {
 
 	r.POST("/submit", handler.SubmitHomework)
 
+	r.GET("/forum", handler.GetMessages)
+	r.POST("/forum", handler.SubmitMessage)
+
 	r.Run()
 }

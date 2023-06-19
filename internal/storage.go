@@ -3,6 +3,7 @@ package internal
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"math/rand"
 	"os"
 	"strconv"
@@ -18,6 +19,7 @@ type Storage struct {
 const (
 	history = "history"
 	ongoing = "ongoing"
+	forum   = "forum"
 )
 
 func NewStorage() (Storage, error) {
@@ -44,6 +46,20 @@ func (s Storage) Random() error {
 	random := rand.Int()
 
 	return s.client.Set(context.Background(), strconv.Itoa(random), random, 0).Err()
+}
+
+func (s Storage) Clear() {
+	if err := s.client.Del(context.Background(), history).Err(); err != nil {
+		panic(err)
+	}
+
+	if err := s.client.Del(context.Background(), ongoing).Err(); err != nil {
+		panic(err)
+	}
+
+	if err := s.client.Del(context.Background(), forum).Err(); err != nil {
+		panic(err)
+	}
 }
 
 func (s Storage) SaveToHistory(hw models.HistoryHomework) error {
@@ -136,4 +152,35 @@ func (s Storage) GetHomeworkByID(ID string) (models.Homework, error) {
 	}
 
 	return homework, nil
+}
+
+func (s Storage) GetForum() ([]models.Message, error) {
+	data, err := s.client.LRange(context.Background(), forum, 0, -1).Result()
+	if err != nil {
+		if errors.Is(err, redis.Nil) {
+			return []models.Message{}, nil
+		}
+	}
+
+	out := make([]models.Message, 0)
+
+	for _, dataMsg := range data {
+		var msg models.Message
+		if err := json.Unmarshal([]byte(dataMsg), &msg); err != nil {
+			return []models.Message{}, err
+		}
+
+		out = append([]models.Message{msg}, out...)
+	}
+
+	return out, nil
+}
+
+func (s Storage) AddMessage(msg models.Message) error {
+	data, err := json.Marshal(msg)
+	if err != nil {
+		return err
+	}
+
+	return s.client.LPush(context.Background(), forum, data).Err()
 }
