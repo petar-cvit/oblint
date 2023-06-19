@@ -144,7 +144,7 @@ func seedForum(storage Storage) {
 	}
 
 	if err := storage.AddMessage(models.Message{
-		Name:          "oblint",
+		Name:          "Marko Marković",
 		Timestamp:     "8:45AM",
 		MessageBody:   "Psotoji sličan u audirornim vježbama",
 		IsCurrentUser: true,
