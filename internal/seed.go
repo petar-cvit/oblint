@@ -126,25 +126,37 @@ func seedOngoing(storage Storage) {
 
 func seedForum(storage Storage) {
 	if err := storage.AddMessage(models.Message{
-		Name:        "John Doe",
-		Timestamp:   "10:45AM",
-		MessageBody: "Jeste li završili 3. zadaću?",
+		Name:          "John Doe",
+		Timestamp:     "8:25AM",
+		MessageBody:   "Jeste li završili 3. zadaću?",
+		IsCurrentUser: false,
 	}); err != nil {
 		panic(err)
 	}
 
 	if err := storage.AddMessage(models.Message{
-		Name:        "Jane Doe",
-		Timestamp:   "10:50AM",
-		MessageBody: "Ja jesam dobila sam sve bodove",
+		Name:          "Jane Doe",
+		Timestamp:     "8:30AM",
+		MessageBody:   "Ja jesam, dobila sam sve bodove",
+		IsCurrentUser: false,
 	}); err != nil {
 		panic(err)
 	}
 
 	if err := storage.AddMessage(models.Message{
-		Name:        "John Doe",
-		Timestamp:   "11:35AM",
-		MessageBody: "Možeš li objasniti kako dobiti rješenje?",
+		Name:          "oblint",
+		Timestamp:     "8:45AM",
+		MessageBody:   "Psotoji sličan u audirornim vježbama",
+		IsCurrentUser: true,
+	}); err != nil {
+		panic(err)
+	}
+
+	if err := storage.AddMessage(models.Message{
+		Name:          "John Doe",
+		Timestamp:     "8:47AM",
+		MessageBody:   "Možeš li svejedno objasniti kako dobiti rješenje?",
+		IsCurrentUser: false,
 	}); err != nil {
 		panic(err)
 	}

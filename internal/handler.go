@@ -195,6 +195,7 @@ func (h *Handler) SubmitMessage(c *gin.Context) {
 	}
 
 	msg.Timestamp = time.Now().Format(time.Kitchen)
+	msg.IsCurrentUser = true
 
 	if err := h.storage.AddMessage(msg); err != nil {
 		c.Status(http.StatusInternalServerError)
