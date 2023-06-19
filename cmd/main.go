@@ -28,6 +28,7 @@ func main() {
 
 	r.GET("/homeworks", handler.Homeworks)
 	r.GET("/homeworks/:ID", handler.HomeworkById)
+	r.POST("/homeworks/new", handler.CreateHomework)
 
 	r.GET("/stats", handler.Stats)
 

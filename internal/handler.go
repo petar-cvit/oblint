@@ -10,6 +10,7 @@ import (
 	"example.com/oblint/internal/models"
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis/v8"
+	"github.com/google/uuid"
 )
 
 type Handler struct {
@@ -124,6 +125,23 @@ func (h *Handler) Stats(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, stats)
+}
+
+func (h *Handler) CreateHomework(c *gin.Context) {
+	var hw models.Homework
+	if err := c.BindJSON(&hw); err != nil {
+		c.Status(http.StatusBadRequest)
+		return
+	}
+
+	hw.ID = uuid.NewString()
+
+	if err := h.storage.SaveToHomeworks(hw); err != nil {
+		c.Status(http.StatusInternalServerError)
+		return
+	}
+
+	c.Status(http.StatusCreated)
 }
 
 func (h *Handler) SubmitHomework(c *gin.Context) {

@@ -170,7 +170,7 @@ func (s Storage) GetForum() ([]models.Message, error) {
 			return []models.Message{}, err
 		}
 
-		out = append([]models.Message{msg}, out...)
+		out = append(out, msg)
 	}
 
 	return out, nil
