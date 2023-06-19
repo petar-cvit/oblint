@@ -201,7 +201,10 @@ func (h *Handler) SubmitHomework(c *gin.Context) {
 		return
 	}
 
-	h.storage.DeleteFromHomeworks(hw)
+	if err := h.storage.DeleteFromHomeworks(hw); err != nil {
+		c.Status(http.StatusInternalServerError)
+		return
+	}
 
 	c.Status(http.StatusOK)
 }
@@ -231,6 +234,7 @@ func (h *Handler) SaveHomework(c *gin.Context) {
 
 	hw.Data = req.DataAnswer
 	hw.Answer = req.StatementAnswer
+	hw.Started = true
 
 	if err := h.storage.SaveToHomeworks(hw); err != nil {
 		c.Status(http.StatusInternalServerError)
