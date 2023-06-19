@@ -196,14 +196,33 @@ func (h *Handler) SubmitHomework(c *gin.Context) {
 }
 
 func (h *Handler) SaveHomework(c *gin.Context) {
-	var hw models.Homework
-	if err := c.BindJSON(&hw); err != nil {
+	var req models.SubmitHomeworkDTO
+	if err := c.BindJSON(&req); err != nil {
 		c.Status(http.StatusBadRequest)
 		return
 	}
 
-	if err := h.storage.SaveToHomeworks(hw); err != nil {
+	hw, err := h.storage.GetHomeworkByID(req.ID)
+	if err != nil {
+		if errors.Is(err, redis.Nil) {
+			c.String(http.StatusBadRequest, "homework not found")
+			return
+		}
+
 		c.Status(http.StatusBadRequest)
+		return
+	}
+
+	if hw.Type == 2 && len(req.DataAnswer) != 12 {
+		c.String(http.StatusBadRequest, "answer should be long 12")
+		return
+	}
+
+	hw.Data = req.DataAnswer
+	hw.Answer = req.StatementAnswer
+
+	if err := h.storage.SaveToHomeworks(hw); err != nil {
+		c.Status(http.StatusInternalServerError)
 		return
 	}
 
