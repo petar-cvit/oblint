@@ -141,6 +141,8 @@ func (h *Handler) CreateHomework(c *gin.Context) {
 		hw.Question = FirstQuestion
 	} else if hw.Type == models.Second {
 		hw.Question = SecondQuestion
+		hw.Data = []string{"0", "0", "", "0", "1", "", "1", "0", "", "1", "1", ""}
+		hw.Data = []string{"0", "0", "1", "0", "1", "0", "1", "0", "1", "1", "1", "0"}
 	}
 
 	if err := h.storage.SaveToHomeworks(hw); err != nil {
