@@ -139,6 +139,7 @@ func (h *Handler) CreateHomework(c *gin.Context) {
 
 	if hw.Type == models.First {
 		hw.Question = FirstQuestion
+		hw.CorrectData = hw.Data
 	} else if hw.Type == models.Second {
 		hw.Question = SecondQuestion
 		hw.Data = []string{"0", "0", "", "0", "1", "", "1", "0", "", "1", "1", ""}
