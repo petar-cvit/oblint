@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math"
 	"net/http"
+	"sort"
 	"time"
 
 	"example.com/oblint/internal/models"
@@ -36,6 +37,13 @@ func (h *Handler) HomeworkHistory(c *gin.Context) {
 		return
 	}
 
+	sort.Slice(history, func(i, j int) bool {
+		iTime, _ := time.Parse("02.01.2006.", history[i].DueDate)
+		jTime, _ := time.Parse("02.01.2006.", history[j].DueDate)
+
+		return iTime.After(jTime)
+	})
+
 	c.JSON(http.StatusOK, history)
 }
 
@@ -57,6 +65,13 @@ func (h *Handler) Homeworks(c *gin.Context) {
 		c.String(http.StatusInternalServerError, err.Error())
 		return
 	}
+
+	sort.Slice(history, func(i, j int) bool {
+		iTime, _ := time.Parse("02.01.2006.", history[i].DueDate)
+		jTime, _ := time.Parse("02.01.2006.", history[j].DueDate)
+
+		return iTime.Before(jTime)
+	})
 
 	c.JSON(http.StatusOK, history)
 }
