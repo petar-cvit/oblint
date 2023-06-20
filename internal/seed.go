@@ -10,7 +10,7 @@ const (
 func seedHistory(storage Storage) {
 	err := storage.SaveToHistory(models.HistoryHomework{
 		ID:             "123",
-		Name:           "Prva zadaca",
+		Name:           "Homework 1",
 		SubmissionDate: "12.05.2023.",
 		DueDate:        "11.05.2023.",
 		Points:         5,
@@ -29,7 +29,7 @@ func seedHistory(storage Storage) {
 
 	err = storage.SaveToHistory(models.HistoryHomework{
 		ID:             "124",
-		Name:           "Druga zadaca",
+		Name:           "Homework 2",
 		SubmissionDate: "15.05.2023.",
 		DueDate:        "11.05.2023.",
 		Points:         9,
@@ -48,7 +48,7 @@ func seedHistory(storage Storage) {
 
 	err = storage.SaveToHistory(models.HistoryHomework{
 		ID:             "125",
-		Name:           "Treca zadaca",
+		Name:           "Homework 3",
 		SubmissionDate: "15.05.2023.",
 		DueDate:        "14.05.2023.",
 		Points:         1,
@@ -69,7 +69,7 @@ func seedHistory(storage Storage) {
 func seedOngoing(storage Storage) {
 	err := storage.SaveToHomeworks(models.Homework{
 		ID:                 "321",
-		Name:               "Prva zadaca za napraviti",
+		Name:               "Homework 4",
 		LastSubmissionDate: "",
 		DueDate:            "15.05.2023.",
 		MaxPoints:          10,
@@ -88,7 +88,7 @@ func seedOngoing(storage Storage) {
 
 	err = storage.SaveToHomeworks(models.Homework{
 		ID:                 "322",
-		Name:               "Prva zadaca za napraviti",
+		Name:               "Homework 5",
 		LastSubmissionDate: "15.05.2023.",
 		DueDate:            "15.05.2023.",
 		MaxPoints:          10,
@@ -107,7 +107,7 @@ func seedOngoing(storage Storage) {
 
 	err = storage.SaveToHomeworks(models.Homework{
 		ID:                 "323",
-		Name:               "Treca zadaca za napraviti",
+		Name:               "Homework 5",
 		LastSubmissionDate: "09.05.2023.",
 		DueDate:            "12.05.2023.",
 		MaxPoints:          10,

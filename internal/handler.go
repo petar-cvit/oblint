@@ -198,7 +198,7 @@ func (h *Handler) SubmitHomework(c *gin.Context) {
 		return
 	}
 
-	points := rand.Intn(10-2) + 10
+	points := rand.Intn(10-2) + 2
 
 	if err := h.storage.SaveToHistory(models.HistoryHomework{
 		ID:             hw.ID,
