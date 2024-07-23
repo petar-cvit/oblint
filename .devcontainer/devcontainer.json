@@ -1,9 +1,9 @@
 {
   "image": "mcr.microsoft.com/devcontainers/universal:2",
   "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
     "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {},
-    "ghcr.io/devcontainers/features/node:1": {},
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+    "ghcr.io/devcontainers/features/node:1": {}
   },
-  "postCreateCommand": "minikube start"
+  "postCreateCommand": "minikube start --wait 'apiserver,system_pods,node_ready,kubelet'"
 }
